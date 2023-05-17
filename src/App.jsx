@@ -1,18 +1,31 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as Y from "yjs";
 import { WebrtcProvider } from "y-webrtc";
-import Quill from "quill";
+// import Quill from "quill";
 import { QuillBinding } from "y-quill";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import QuillCursors from "quill-cursors";
+// import QuillCursors from "quill-cursors";
 
 function App() {
   let quillRef = null;
   let reactQuillRef = null;
 
-  const { id } = useParams();
+  const [params] = useSearchParams();
+  const id = params.get("id");
+  const navigate = useNavigate();
+
+  console.log(id);
+
+  useEffect(() => {
+    if (!id) {
+      navigate({
+        pathname: "/editor",
+        search: "?id=123",
+      });
+    }
+  }, []);
 
   const attachQuillRefs = () => {
     if (typeof reactQuillRef.getEditor !== "function") return;
@@ -22,7 +35,9 @@ function App() {
   useEffect(() => {
     attachQuillRefs();
 
-    Quill.register("modules/cursors", QuillCursors);
+    // Quill.register("modules/cursors", QuillCursors);
+
+    if (!id) return;
 
     const ydoc = new Y.Doc();
     const provider = new WebrtcProvider(id, ydoc);

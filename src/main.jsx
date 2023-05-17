@@ -1,12 +1,28 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useNavigate,
+} from "react-router-dom";
 import "./index.css";
 
+const Home = () => {
+  const navigage = useNavigate();
+  return (
+    <div>
+      <button onClick={() => navigage("/editor")}>go to editor</button>
+    </div>
+  );
+};
 const router = createBrowserRouter([
   {
-    path: "/:id",
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/editor",
     element: <App />,
   },
 ]);
